@@ -49,9 +49,35 @@ Ensure you have **Python 3.9+** installed. You can check by typing `python3 --ve
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone [https://github.com/Jit-das01/career-intel-dashboard.git](https://github.com/Jit-das01/career-intel-dashboard.git)
+git clone https://github.com/Jit-das01/career-intel-dashboard.git
 
 # Enter the directory
+
+
+---
+
+## ✨ Key Features & Technical Highlights
+
+* 🧠 **Advanced Prediction:** Leveraged Gradient Boosting Regressor to achieve a high-precision $R^2$ score of **0.897**, ensuring reliable salary forecasts.
+* 📱 **Responsive Design:** A fully interactive, mobile-friendly dashboard built with a custom dark-mode UI for seamless cross-device exploration.
+* 📈 **Real-time Analytics:** Integrated **Chart.js** for dynamic, real-time visualization of salary trends across 14 distinct career paths.
+
+---
+
+## 🤝 Connect With Me
+I'm a **Senior TA Head** transitioning into **Data Science**. I love discussing the future of work, AI in recruitment, and full-stack development. Let's connect!
+
+<div align="left">
+
+- 💼 **LinkedIn:** [Jit Das](linkedin.com/in/jitdas01) 
+- 📁 **GitHub:** [Jit-das01](https://github.com/Jit-das01)
+- 📧 **Email:** jit.das282005@gmail.com
+
+</div>
+
+<div align="center">
+  <sub>Built with 🐨 by Jit Das. © 2026</sub>
+</div>
 cd career-intel-dashboard
 
 # Install dependencies
