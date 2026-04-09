@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>CareerIntel Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--border:#2a2a3a;--text:#f0f0f8;--muted:#8888aa;--green:#1D9E75;--blue:#378ADD;--amber:#EF9F27;--coral:#D85A30;--font:'Syne',sans-serif;--mono:'JetBrains Mono',monospace}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.1rem;font-weight:800}.logo span{color:var(--green)}
+.nav-badge{font-family:var(--mono);font-size:11px;background:#1D9E7522;border:1px solid #1D9E7544;color:var(--green);border-radius:20px;padding:4px 12px}
+.hero{padding:5rem 2rem 3rem;text-align:center;background:radial-gradient(ellipse 80% 50% at 50% -10%,#1D9E7515,transparent)}
+.hero-tag{font-family:var(--mono);font-size:11px;color:var(--green);border:1px solid #1D9E7533;border-radius:20px;padding:5px 16px;display:inline-block;margin-bottom:1.5rem}
+h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:1rem;letter-spacing:-2px}
+h1 em{color:var(--green);font-style:normal}
+.hero p{color:var(--muted);font-size:1rem;max-width:580px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap}
+.hstat .val{font-size:2rem;font-weight:800;color:var(--green)}.hstat .lbl{font-size:11px;font-family:var(--mono);color:var(--muted)}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section{padding:3rem 0}
+.sec-title{font-size:1.2rem;font-weight:700;margin-bottom:1.5rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:2rem}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.kpi-val{font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:6px}
+.kpi-label{font-size:11px;font-family:var(--mono);color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.filt{font-family:var(--mono);font-size:11px;padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+.filt.active{background:var(--green);border-color:var(--green);color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.5rem}
+.card-label{font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.5px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-lbl{font-size:12px;width:120px;flex-shrink:0}
+.bar-track{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-size:11px;font-family:var(--mono);color:var(--muted);width:50px;text-align:right}
+.predictor{background:linear-gradient(135deg,#111118,#0d1f18);border:1px solid #1D9E7533;border-radius:16px;padding:2rem;margin-bottom:2rem}
+.predictor h2{font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
+.predictor p{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+label{font-size:11px;font-family:var(--mono);color:var(--muted);display:block;margin-bottom:6px}
+select,input[type=number]{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none}
+select:focus,input:focus{border-color:var(--green)}
+.btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-family:var(--font);font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.result{margin-top:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:none}
+.result.show{display:block}
+.result-sal{font-size:2.2rem;font-weight:800;color:var(--green);margin-bottom:4px}
+.result-range{font-size:12px;font-family:var(--mono);color:var(--muted)}
+.trend-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.trend-row:last-child{border-bottom:none}
+.ttag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;width:48px;text-align:center}
+.up{background:#1D9E7522;color:var(--green)}.down{background:#D85A3022;color:var(--coral)}
+.tname{font-size:13px;flex:1}.tpct{font-family:var(--mono);font-size:12px;color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:12px;font-family:var(--mono)}
+footer a{color:var(--muted);text-decoration:none}
+</style></head><body>
+<nav><div class="logo">Career<span>Intel</span></div><div style="font-family:var(--mono);font-size:12px;color:#1D9E75;font-weight:500">Designed & Built by Jit Das</div><div class="nav-badge">ML Powered · R²=0.897</div></nav>
+<div class="hero">
+  <div class="hero-tag">College Major × Salary Intelligence</div>
+  <h1>Does your major predict<br/>your <em>salary?</em></h1>
+  <p>AI-powered analysis of 1,642 data points across 14 majors using Gradient Boosting ML. Built with Python, Flask & Scikit-learn.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="val">14</div><div class="lbl">Majors analyzed</div></div>
+    <div class="hstat"><div class="val">1,642</div><div class="lbl">Data points</div></div>
+    <div class="hstat"><div class="val">89.7%</div><div class="lbl">Model accuracy</div></div>
+    <div class="hstat"><div class="val">3.2×</div><div class="lbl">STEM vs Arts gap</div></div>
+  </div>
+</div>
+<div class="container">
+<div class="section">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">$118K</div><div class="kpi-label">Top AI/ML salary</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--blue)">94%</div><div class="kpi-label">Nursing employment</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">$42K</div><div class="kpi-label">Eng. Lit. median</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--coral)">+47%</div><div class="kpi-label">AI job growth YoY</div></div>
+  </div>
+  <div class="filters" id="filters"><button class="filt active" data-cat="all">All</button></div>
+  <div class="grid2">
+    <div class="card"><div class="card-label">Median salary — $K</div><div id="sal-bars"></div></div>
+    <div class="card"><div class="card-label">Employment rate — %</div><div id="emp-bars"></div></div>
+  </div>
+  <div class="card"><div class="card-label">Salary vs employment — bubble = job openings</div><div style="height:300px"><canvas id="scatter"></canvas></div></div>
+</div>
+<div class="section">
+  <div class="predictor">
+    <h2>🤖 AI Salary Predictor</h2>
+    <p>Gradient Boosting model predicts your expected salary based on major + experience.</p>
+    <div class="form-grid">
+      <div><label>Your major</label><select id="maj-sel"><option value="">Loading...</option></select></div>
+      <div><label>Years of experience</label><input type="number" id="exp-in" min="0" max="30" value="0"/></div>
+      <button class="btn" onclick="predict()">Predict →</button>
+    </div>
+    <div class="result" id="res">
+      <div style="font-size:12px;font-family:var(--mono);color:var(--muted);margin-bottom:4px" id="res-maj"></div>
+      <div class="result-sal" id="res-sal"></div>
+      <div class="result-range" id="res-range"></div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="grid2">
+    <div class="card"><div class="card-label" style="color:var(--green)">▲ Top gainers</div><div id="gainers"></div></div>
+    <div class="card"><div class="card-label" style="color:var(--coral)">▼ Declining fields</div><div id="losers"></div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="card-label">Avg salary by field</div><div style="height:260px"><canvas id="field-chart"></canvas></div></div>
+</div>
+</div>
+<footer>
+<div style="margin-bottom:1rem">
+  <div style="font-size:1rem;font-weight:800;color:#f0f0f8;margin-bottom:.4rem">Designed & Built by <span style="color:#1D9E75">Jit Das</span></div>
+  <div style="font-size:12px;color:#8888aa;margin-bottom:.8rem">Senior TA Head @ EpochFolio · Data Science Intern @ iMerit · BCA @ Techno India University, Kolkata</div>
+  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+    <a href="https://github.com/Jit-das01" style="font-family:monospace;font-size:11px;color:#1D9E75;text-decoration:none;border:1px solid #1D9E7544;padding:5px 14px;border-radius:20px">GitHub @Jit-das01</a>
+    <span style="font-family:monospace;font-size:11px;color:#8888aa;border:1px solid #2a2a3a;padding:5px 14px;border-radius:20px">Python · Flask · Pandas · Scikit-learn · Chart.js</span>
+    <span style="font-family:monospace;font-size:11px;color:#8888aa;border:1px solid #2a2a3a;padding:5px 14px;border-radius:20px">ML Model R²=0.897</span>
+  </div>
+</div>
+<div style="font-size:11px;color:#444466;margin-top:1rem">© 2026 Jit Das · All rights reserved</div>
+</footer>
+<script>
+const CC={Tech:'#1D9E75',Engineering:'#378ADD',Healthcare:'#EF9F27',Business:'#BA7517','Arts & Humanities':'#D85A30',Science:'#D4537E'};
+let af='all',sc=null,fc=null;
+async function fj(u){return (await fetch(u)).json()}
+async function init(){
+  const cats=await fj('/api/categories');
+  const fb=document.getElementById('filters');
+  cats.forEach(c=>{const b=document.createElement('button');b.className='filt';b.dataset.cat=c;b.textContent=c;fb.appendChild(b);});
+  fb.addEventListener('click',e=>{if(!e.target.matches('.filt'))return;document.querySelectorAll('.filt').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');af=e.target.dataset.cat;loadCharts();});
+  const mjs=await fj('/api/majors');
+  const s=document.getElementById('maj-sel');s.innerHTML='<option value="">— Select major —</option>';
+  mjs.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);});
+  await loadCharts();await loadTrends();
+}
+async function loadCharts(){
+  const d=await fj('/api/scatter?category='+af);
+  const ss=[...d].sort((a,b)=>b.salary-a.salary);const mx=Math.max(...ss.map(x=>x.salary));
+  document.getElementById('sal-bars').innerHTML=ss.slice(0,7).map(d=>`<div class="bar-row"><div class="bar-lbl" title="${d.major}">${d.major.length>14?d.major.slice(0,13)+'…':d.major}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.salary/mx*100)}%;background:${CC[d.category]||'#1D9E75'}"></div></div><div class="bar-val">$${d.salary}K</div></div>`).join('');
+  const se=[...d].sort((a,b)=>b.emp-a.emp);
+  document.getElementById('emp-bars').innerHTML=se.slice(0,7).map(d=>`<div class="bar-row"><div class="bar-lbl" title="${d.major}">${d.major.length>14?d.major.slice(0,13)+'…':d.major}</div><div class="bar-track"><div class="bar-fill" style="width:${d.emp}%;background:${CC[d.category]||'#378ADD'}"></div></div><div class="bar-val">${d.emp}%</div></div>`).join('');
+  if(sc)sc.destroy();
+  const cats=[...new Set(d.map(x=>x.category))];
+  sc=new Chart(document.getElementById('scatter').getContext('2d'),{type:'bubble',data:{datasets:cats.map(c=>({label:c,data:d.filter(x=>x.category===c).map(x=>({x:x.salary,y:x.emp,r:Math.max(5,x.jobs/500),label:x.major})),backgroundColor:hexA(CC[c]||'#1D9E75',.7),borderColor:CC[c]||'#1D9E75',borderWidth:1}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8888aa',font:{family:'JetBrains Mono',size:11}}},tooltip:{callbacks:{label:d=>[d.raw.label,'$'+d.raw.x+'K · '+d.raw.y+'% employed']}}},scales:{x:{title:{display:true,text:'Median Salary ($K)',color:'#8888aa'},ticks:{color:'#8888aa'},grid:{color:'#2a2a3a'}},y:{title:{display:true,text:'Employment Rate (%)',color:'#8888aa'},ticks:{color:'#8888aa'},grid:{color:'#2a2a3a'}}}}});
+}
+async function loadTrends(){
+  const t=await fj('/api/trends');
+  document.getElementById('gainers').innerHTML=t.gainers.map(m=>`<div class="trend-row"><span class="ttag up">▲ UP</span><span class="tname">${m.major}</span><span class="tpct">+${m.job_growth_pct}%</span></div>`).join('');
+  document.getElementById('losers').innerHTML=t.losers.map(m=>`<div class="trend-row"><span class="ttag down">▼ DN</span><span class="tname">${m.major}</span><span class="tpct">${m.job_growth_pct}%</span></div>`).join('');
+  const s=await fj('/api/summary');const bc={};s.forEach(m=>{if(!bc[m.category])bc[m.category]=[];bc[m.category].push(m.median_salary_k);});
+  const cl=Object.keys(bc);const av=cl.map(c=>Math.round(bc[c].reduce((a,b)=>a+b,0)/bc[c].length));
+  if(fc)fc.destroy();fc=new Chart(document.getElementById('field-chart').getContext('2d'),{type:'bar',data:{labels:cl,datasets:[{label:'Avg Salary ($K)',data:av,backgroundColor:cl.map(c=>hexA(CC[c]||'#1D9E75',.8)),borderColor:cl.map(c=>CC[c]||'#1D9E75'),borderWidth:1,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8888aa'},grid:{display:false}},y:{ticks:{color:'#8888aa',callback:v=>'$'+v+'K'},grid:{color:'#2a2a3a'}}}}});
+}
+async function predict(){
+  const major=document.getElementById('maj-sel').value;const exp=document.getElementById('exp-in').value||0;
+  if(!major){alert('Select a major first!');return;}
+  const btn=document.querySelector('.btn');btn.textContent='Predicting...';btn.disabled=true;
+  const d=await(await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({major,years_experience:parseInt(exp)})})).json();
+  document.getElementById('res-maj').textContent=d.major+' · '+d.category;
+  document.getElementById('res-sal').textContent='$'+d.predicted_salary_k+'K / year';
+  document.getElementById('res-range').textContent='Range: $'+d.range_low_k+'K – $'+d.range_high_k+'K · Accuracy: '+d.model_accuracy;
+  document.getElementById('res').classList.add('show');
+  btn.textContent='Predict →';btn.disabled=false;
+}
+function hexA(h,a){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},${a})`}
+init();
+</script></body></html>

@@ -1,0 +1,114 @@
+[
+  {
+    "major": "Artificial Intelligence",
+    "category": "Tech",
+    "median_salary_k": 118,
+    "employment_rate": 91,
+    "job_growth_pct": 47,
+    "job_openings": 2900
+  },
+  {
+    "major": "Computer Science",
+    "category": "Tech",
+    "median_salary_k": 115,
+    "employment_rate": 88,
+    "job_growth_pct": 35,
+    "job_openings": 4200
+  },
+  {
+    "major": "Data Science",
+    "category": "Tech",
+    "median_salary_k": 112,
+    "employment_rate": 86,
+    "job_growth_pct": 31,
+    "job_openings": 3800
+  },
+  {
+    "major": "Software Engineering",
+    "category": "Tech",
+    "median_salary_k": 110,
+    "employment_rate": 87,
+    "job_growth_pct": 28,
+    "job_openings": 5100
+  },
+  {
+    "major": "Electrical Engineering",
+    "category": "Engineering",
+    "median_salary_k": 104,
+    "employment_rate": 83,
+    "job_growth_pct": 12,
+    "job_openings": 2100
+  },
+  {
+    "major": "Mechanical Engineering",
+    "category": "Engineering",
+    "median_salary_k": 98,
+    "employment_rate": 81,
+    "job_growth_pct": 8,
+    "job_openings": 2400
+  },
+  {
+    "major": "Nursing",
+    "category": "Healthcare",
+    "median_salary_k": 82,
+    "employment_rate": 94,
+    "job_growth_pct": 15,
+    "job_openings": 5100
+  },
+  {
+    "major": "Medicine (Pre-Med)",
+    "category": "Healthcare",
+    "median_salary_k": 92,
+    "employment_rate": 88,
+    "job_growth_pct": 10,
+    "job_openings": 3200
+  },
+  {
+    "major": "MBA",
+    "category": "Business",
+    "median_salary_k": 94,
+    "employment_rate": 81,
+    "job_growth_pct": 14,
+    "job_openings": 2700
+  },
+  {
+    "major": "Finance",
+    "category": "Business",
+    "median_salary_k": 78,
+    "employment_rate": 77,
+    "job_growth_pct": 3,
+    "job_openings": 3300
+  },
+  {
+    "major": "Psychology",
+    "category": "Arts & Humanities",
+    "median_salary_k": 48,
+    "employment_rate": 66,
+    "job_growth_pct": -2,
+    "job_openings": 900
+  },
+  {
+    "major": "English Literature",
+    "category": "Arts & Humanities",
+    "median_salary_k": 42,
+    "employment_rate": 60,
+    "job_growth_pct": -8,
+    "job_openings": 450
+  },
+  {
+    "major": "Physics",
+    "category": "Science",
+    "median_salary_k": 88,
+    "employment_rate": 78,
+    "job_growth_pct": 18,
+    "job_openings": 1100
+  },
+  {
+    "major": "Mathematics",
+    "category": "Science",
+    "median_salary_k": 84,
+    "employment_rate": 80,
+    "job_growth_pct": 22,
+    "job_openings": 1600
+  }
+]
